@@ -17,3 +17,8 @@ Applikationen hjälper kunden att välja teprodukter, hantera sin varukorg och s
 - **K7:** Kunden måste ange namn och en e-postadress med giltigt format. Fel visas tydligt.
 - **K8:** En tom varukorg kan inte beställas.
 - **K9:** En giltig beställning visar en sammanfattning med produkter, pris och kunduppgifter.
+
+## Moduler
+
+Appen använder [Shopping Cart Module](https://github.com/rosa24-bth/1DV610-laboration-2)
+för varukorgen. Modulen finns i `modules/shopping-cart/`.
