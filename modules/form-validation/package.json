@@ -1,0 +1,25 @@
+{
+  "name": "laboration-2",
+  "version": "1.0.0",
+  "description": "A reusable JavaScript module for form validation.",
+  "type": "module",
+  "scripts": {
+    "test": "node test/validation-test.js && node test/module-test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fielifia/1dv610-laboration-2.git"
+  },
+  "keywords": [
+    "javascript",
+    "form-validation",
+    "validation",
+    "module"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fielifia/1dv610-laboration-2/issues"
+  },
+  "homepage": "https://github.com/Fielifia/1dv610-laboration-2#readme"
+}

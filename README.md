@@ -22,3 +22,6 @@ Applikationen hjälper kunden att välja teprodukter, hantera sin varukorg och s
 
 Appen använder [Shopping Cart Module](https://github.com/rosa24-bth/1DV610-laboration-2)
 för varukorgen. Modulen finns i `modules/shopping-cart/`.
+
+Kunduppgifterna kontrolleras med [Form Validation Module](https://github.com/Fielifia/1dv610-laboration-2),
+som finns i `modules/form-validation/`.
