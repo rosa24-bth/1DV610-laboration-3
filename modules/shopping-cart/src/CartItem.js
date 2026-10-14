@@ -18,7 +18,7 @@ export class CartItem {
   }
 
   setQuantity(quantity) {
-    if (quantity <= 0) {
+    if (!Number.isFinite(quantity) || quantity <= 0) {
       return false;
     }
 
@@ -27,7 +27,7 @@ export class CartItem {
   }
 
   increaseQuantity(quantity) {
-    if (quantity <= 0) {
+    if (!Number.isFinite(quantity) || quantity <= 0) {
       return false;
     }
 
@@ -36,7 +36,7 @@ export class CartItem {
   }
 
   decreaseQuantity(quantity) {
-    if (quantity <= 0) {
+    if (!Number.isFinite(quantity) || quantity <= 0) {
       return false;
     }
 
