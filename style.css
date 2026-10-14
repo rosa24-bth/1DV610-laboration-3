@@ -96,7 +96,8 @@ button:focus-visible {
 }
 
 .cart,
-.customer {
+.customer,
+.order-summary {
   margin-top: 40px;
   padding: 24px;
   border: 1px solid #dcded4;

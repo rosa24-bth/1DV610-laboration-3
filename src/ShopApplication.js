@@ -19,7 +19,7 @@ export class ShopApplication {
   #customerName;
   #customerEmail;
   #customerErrors;
-  #customerStatus;
+  #orderSummary;
   #products = [
     { name: "Rooibos", price: 60, description: "Mjukt och fylligt rött te." },
     { name: "Grönt te", price: 50, description: "Ett lätt te med frisk smak." },
@@ -52,11 +52,11 @@ export class ShopApplication {
     this.#customerName = document.getElementById("customer-name");
     this.#customerEmail = document.getElementById("customer-email");
     this.#customerErrors = document.getElementById("customer-errors");
-    this.#customerStatus = document.getElementById("customer-status");
+    this.#orderSummary = document.getElementById("order-summary");
 
     document
       .getElementById("customer-form")
-      .addEventListener("submit", (event) => this.#checkCustomer(event));
+      .addEventListener("submit", (event) => this.#placeOrder(event));
 
     document
       .getElementById("discount-form")
@@ -201,25 +201,59 @@ export class ShopApplication {
     this.#renderCart();
   }
 
-  #checkCustomer(event) {
+  #placeOrder(event) {
     event.preventDefault();
     const customer = {
       name: this.#customerName.value.trim(),
       email: this.#customerEmail.value.trim(),
     };
     const errors = this.#customerValidator.getErrors(customer);
+    if (this.#cart.isEmpty()) {
+      errors.push("Lägg minst en produkt i varukorgen innan du beställer.");
+    }
 
     this.#customerErrors.replaceChildren();
-    this.#customerStatus.textContent = "";
+    this.#orderSummary.hidden = true;
     for (const message of errors) {
       const element = document.createElement("li");
       element.textContent = message;
       this.#customerErrors.append(element);
     }
 
-    if (errors.length === 0) {
-      this.#customerStatus.textContent = "Kunduppgifterna är giltiga.";
+    if (errors.length > 0) {
+      return;
     }
+
+    this.#showOrder(customer);
+  }
+
+  #showOrder(customer) {
+    const heading = document.createElement("h2");
+    heading.textContent = "Din beställning";
+
+    const customerDetails = document.createElement("p");
+    customerDetails.textContent = `${customer.name} – ${customer.email}`;
+
+    // Copy the values into the summary so later cart changes do not change this order.
+    const list = document.createElement("ul");
+    for (const item of this.#cart.getItems()) {
+      const element = document.createElement("li");
+      element.textContent = `${item.getName()} (${item.getQuantity()} st) – ${this.#formatPrice(item.getTotalPrice())}`;
+      list.append(element);
+    }
+
+    const subtotal = document.createElement("p");
+    subtotal.textContent = `Delsumma: ${this.#formatPrice(this.#cart.getSubtotal())}`;
+
+    const discount = document.createElement("p");
+    discount.textContent = `Rabatt: ${this.#cart.getDiscount()} %`;
+
+    const total = document.createElement("p");
+    total.className = "cart-total";
+    total.textContent = `Totalt: ${this.#formatPrice(this.#cart.getTotalPrice())}`;
+
+    this.#orderSummary.replaceChildren(heading, customerDetails, list, subtotal, discount, total);
+    this.#orderSummary.hidden = false;
   }
 
   #formatPrice(price) {
