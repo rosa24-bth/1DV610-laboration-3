@@ -110,8 +110,32 @@ button:focus-visible {
 }
 
 .cart-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
   padding: 12px 0;
   border-bottom: 1px solid #dcded4;
+}
+
+.cart-item-details {
+  flex: 1;
+  min-width: 180px;
+}
+
+.cart-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.cart-controls button {
+  padding: 6px 12px;
+}
+
+button:disabled {
+  background: #dcded4;
+  color: #53604e;
+  cursor: default;
 }
 
 .cart-total {

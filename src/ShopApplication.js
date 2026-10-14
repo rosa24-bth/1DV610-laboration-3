@@ -13,9 +13,21 @@ export class ShopApplication {
   #products = [
     { name: "Rooibos", price: 60, description: "Mjukt och fylligt rött te." },
     { name: "Grönt te", price: 50, description: "Ett lätt te med frisk smak." },
-    { name: "Svart te", price: 45, description: "Ett klassiskt te med fyllig smak." },
-    { name: "Pepparmynta", price: 55, description: "Ett örtte med sval mintsmak." },
-    { name: "Kamomill", price: 50, description: "Ett milt örtte med blommig smak." },
+    {
+      name: "Svart te",
+      price: 45,
+      description: "Ett klassiskt te med fyllig smak.",
+    },
+    {
+      name: "Pepparmynta",
+      price: 55,
+      description: "Ett örtte med sval mintsmak.",
+    },
+    {
+      name: "Kamomill",
+      price: 50,
+      description: "Ett milt örtte med blommig smak.",
+    },
   ];
 
   constructor() {
@@ -72,11 +84,68 @@ export class ShopApplication {
     this.#emptyCartMessage.hidden = !this.#cart.isEmpty();
 
     for (const item of this.#cart.getItems()) {
-      const element = document.createElement("li");
-      element.textContent = `${item.getName()} (${item.getQuantity()} st) – ${item.getTotalPrice()} kr`;
-      this.#cartList.append(element);
+      this.#cartList.append(this.#createCartElement(item));
     }
 
     this.#cartTotal.textContent = `${this.#cart.getTotalPrice()} kr`;
+  }
+
+  #createCartElement(item) {
+    const element = document.createElement("li");
+
+    const details = document.createElement("span");
+    details.className = "cart-item-details";
+    details.textContent = `${item.getName()} (${item.getQuantity()} st) – ${item.getTotalPrice()} kr`;
+
+    const controls = document.createElement("div");
+    controls.className = "cart-controls";
+
+    const decreaseButton = document.createElement("button");
+    decreaseButton.type = "button";
+    decreaseButton.textContent = "−";
+    // Removing a product is a separate action and decreasing stops at one.
+    decreaseButton.disabled = item.getQuantity() === 1;
+    decreaseButton.setAttribute("aria-label", `Minska antal ${item.getName()}`);
+    decreaseButton.addEventListener("click", () =>
+      this.#decreaseQuantity(item.getName()),
+    );
+
+    const increaseButton = document.createElement("button");
+    increaseButton.type = "button";
+    increaseButton.textContent = "+";
+    increaseButton.setAttribute("aria-label", `Öka antal ${item.getName()}`);
+    increaseButton.addEventListener("click", () =>
+      this.#increaseQuantity(item.getName()),
+    );
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.textContent = "Ta bort";
+    removeButton.setAttribute(
+      "aria-label",
+      `Ta bort ${item.getName()} från varukorgen`,
+    );
+    removeButton.addEventListener("click", () =>
+      this.#removeProduct(item.getName()),
+    );
+
+    controls.append(decreaseButton, increaseButton, removeButton);
+    element.append(details, controls);
+    return element;
+  }
+
+  #increaseQuantity(name) {
+    this.#cart.increaseItemQuantity(name);
+    this.#renderCart();
+  }
+
+  #decreaseQuantity(name) {
+    this.#cart.decreaseItemQuantity(name);
+    this.#renderCart();
+  }
+
+  #removeProduct(name) {
+    this.#cart.removeItem(name);
+    this.#renderCart();
   }
 }
