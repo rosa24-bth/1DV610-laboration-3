@@ -142,3 +142,27 @@ button:disabled {
   font-size: 1.2rem;
   font-weight: 700;
 }
+
+.discount-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.discount-form input {
+  width: 90px;
+  padding: 8px;
+  border: 1px solid #67733b;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.error {
+  color: #9b2525;
+}
+
+.error:empty {
+  display: none;
+}

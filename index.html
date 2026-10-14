@@ -14,15 +14,24 @@
       <p>Upptäck våra tesorter och hitta din favorit.</p>
     </header>
     <main>
-      <section aria-labelledby="products-heading">
-        <h2 id="products-heading">Våra teer</h2>
+      <section>
+        <h2>Våra teer</h2>
         <ul id="product-list" class="product-list"></ul>
       </section>
-      <section class="cart" aria-labelledby="cart-heading">
-        <h2 id="cart-heading">Din varukorg</h2>
+      <section class="cart">
+        <h2>Din varukorg</h2>
         <p id="cart-empty">Din varukorg är tom.</p>
         <ul id="cart-list" class="cart-list"></ul>
-        <p class="cart-total">Totalt: <span id="cart-total" aria-live="polite">0 kr</span></p>
+        <form id="discount-form" class="discount-form" novalidate>
+          <label for="discount-input">Rabatt (%)</label>
+          <input id="discount-input" type="number" min="0" max="100" step="any" value="0">
+          <button type="submit">Använd rabatt</button>
+        </form>
+        <p id="discount-error" class="error" role="alert"></p>
+        <p>Delsumma: <span id="cart-subtotal">0.00 kr</span></p>
+        <p>Rabatt: <span id="cart-discount">0 % (0.00 kr)</span></p>
+        <p class="cart-total">Totalt: <span id="cart-total">0.00 kr</span></p>
+        <button id="clear-cart" type="button">Töm varukorgen</button>
       </section>
     </main>
   </body>

@@ -9,6 +9,10 @@ export class ShopApplication {
   #productList;
   #cartList;
   #cartTotal;
+  #cartSubtotal;
+  #cartDiscount;
+  #discountInput;
+  #discountError;
   #emptyCartMessage;
   #products = [
     { name: "Rooibos", price: 60, description: "Mjukt och fylligt rött te." },
@@ -34,7 +38,18 @@ export class ShopApplication {
     this.#productList = document.getElementById("product-list");
     this.#cartList = document.getElementById("cart-list");
     this.#cartTotal = document.getElementById("cart-total");
+    this.#cartSubtotal = document.getElementById("cart-subtotal");
+    this.#cartDiscount = document.getElementById("cart-discount");
+    this.#discountInput = document.getElementById("discount-input");
+    this.#discountError = document.getElementById("discount-error");
     this.#emptyCartMessage = document.getElementById("cart-empty");
+
+    document
+      .getElementById("discount-form")
+      .addEventListener("submit", (event) => this.#applyDiscount(event));
+    document
+      .getElementById("clear-cart")
+      .addEventListener("click", () => this.#clearCart());
   }
 
   start() {
@@ -61,12 +76,11 @@ export class ShopApplication {
 
     const price = document.createElement("p");
     price.className = "price";
-    price.textContent = `${product.price} kr`;
+    price.textContent = this.#formatPrice(product.price);
 
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = "Lägg i varukorg";
-    button.setAttribute("aria-label", `Lägg ${product.name} i varukorgen`);
     button.addEventListener("click", () => this.#addProduct(product));
 
     element.append(name, description, price, button);
@@ -87,7 +101,13 @@ export class ShopApplication {
       this.#cartList.append(this.#createCartElement(item));
     }
 
-    this.#cartTotal.textContent = `${this.#cart.getTotalPrice()} kr`;
+    const subtotal = this.#cart.getSubtotal();
+    const total = this.#cart.getTotalPrice();
+    const discountAmount = subtotal - total;
+
+    this.#cartSubtotal.textContent = this.#formatPrice(subtotal);
+    this.#cartDiscount.textContent = `${this.#cart.getDiscount()} % (${this.#formatPrice(discountAmount)})`;
+    this.#cartTotal.textContent = this.#formatPrice(total);
   }
 
   #createCartElement(item) {
@@ -95,7 +115,7 @@ export class ShopApplication {
 
     const details = document.createElement("span");
     details.className = "cart-item-details";
-    details.textContent = `${item.getName()} (${item.getQuantity()} st) – ${item.getTotalPrice()} kr`;
+    details.textContent = `${item.getName()} (${item.getQuantity()} st) – ${this.#formatPrice(item.getTotalPrice())}`;
 
     const controls = document.createElement("div");
     controls.className = "cart-controls";
@@ -121,10 +141,6 @@ export class ShopApplication {
     const removeButton = document.createElement("button");
     removeButton.type = "button";
     removeButton.textContent = "Ta bort";
-    removeButton.setAttribute(
-      "aria-label",
-      `Ta bort ${item.getName()} från varukorgen`,
-    );
     removeButton.addEventListener("click", () =>
       this.#removeProduct(item.getName()),
     );
@@ -147,5 +163,33 @@ export class ShopApplication {
   #removeProduct(name) {
     this.#cart.removeItem(name);
     this.#renderCart();
+  }
+
+  #applyDiscount(event) {
+    // Handle the discount here without reloading the page.
+    event.preventDefault();
+    const percent = this.#discountInput.valueAsNumber;
+
+    if (!this.#cart.applyDiscount(percent)) {
+      this.#discountError.textContent =
+        "Ange en rabatt mellan 0 och 100 procent.";
+      return;
+    }
+
+    this.#discountError.textContent = "";
+    this.#renderCart();
+  }
+
+  #clearCart() {
+    this.#cart.clearCart();
+    this.#discountInput.value = "0";
+    this.#discountError.textContent = "";
+    this.#renderCart();
+  }
+
+  #formatPrice(price) {
+    // Round prices for display but the module keeps the calculation values.
+    const formattedPrice = price.toFixed(2);
+    return formattedPrice + " kr";
   }
 }
