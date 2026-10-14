@@ -33,6 +33,19 @@
         <p class="cart-total">Totalt: <span id="cart-total">0.00 kr</span></p>
         <button id="clear-cart" type="button">Töm varukorgen</button>
       </section>
+      <section class="customer">
+        <h2>Dina uppgifter</h2>
+        <!-- The validation module checks the fields instead of the browser. -->
+        <form id="customer-form" class="customer-form" novalidate>
+          <label for="customer-name">Namn</label>
+          <input id="customer-name" type="text" autocomplete="name" required>
+          <label for="customer-email">E-postadress</label>
+          <input id="customer-email" type="email" autocomplete="email" required>
+          <button type="submit">Kontrollera uppgifter</button>
+        </form>
+        <ul id="customer-errors" class="error" role="alert"></ul>
+        <p id="customer-status"></p>
+      </section>
     </main>
   </body>
 </html>

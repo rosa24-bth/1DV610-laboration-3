@@ -1,4 +1,5 @@
 import { ShoppingCart } from "../modules/shopping-cart/index.js";
+import { CustomerValidator } from "./CustomerValidator.js";
 
 /**
  * Connects the page to ShoppingCart.
@@ -14,6 +15,11 @@ export class ShopApplication {
   #discountInput;
   #discountError;
   #emptyCartMessage;
+  #customerValidator = new CustomerValidator();
+  #customerName;
+  #customerEmail;
+  #customerErrors;
+  #customerStatus;
   #products = [
     { name: "Rooibos", price: 60, description: "Mjukt och fylligt rött te." },
     { name: "Grönt te", price: 50, description: "Ett lätt te med frisk smak." },
@@ -43,6 +49,14 @@ export class ShopApplication {
     this.#discountInput = document.getElementById("discount-input");
     this.#discountError = document.getElementById("discount-error");
     this.#emptyCartMessage = document.getElementById("cart-empty");
+    this.#customerName = document.getElementById("customer-name");
+    this.#customerEmail = document.getElementById("customer-email");
+    this.#customerErrors = document.getElementById("customer-errors");
+    this.#customerStatus = document.getElementById("customer-status");
+
+    document
+      .getElementById("customer-form")
+      .addEventListener("submit", (event) => this.#checkCustomer(event));
 
     document
       .getElementById("discount-form")
@@ -185,6 +199,27 @@ export class ShopApplication {
     this.#discountInput.value = "0";
     this.#discountError.textContent = "";
     this.#renderCart();
+  }
+
+  #checkCustomer(event) {
+    event.preventDefault();
+    const customer = {
+      name: this.#customerName.value.trim(),
+      email: this.#customerEmail.value.trim(),
+    };
+    const errors = this.#customerValidator.getErrors(customer);
+
+    this.#customerErrors.replaceChildren();
+    this.#customerStatus.textContent = "";
+    for (const message of errors) {
+      const element = document.createElement("li");
+      element.textContent = message;
+      this.#customerErrors.append(element);
+    }
+
+    if (errors.length === 0) {
+      this.#customerStatus.textContent = "Kunduppgifterna är giltiga.";
+    }
   }
 
   #formatPrice(price) {

@@ -95,7 +95,8 @@ button:focus-visible {
   margin-top: 20px;
 }
 
-.cart {
+.cart,
+.customer {
   margin-top: 40px;
   padding: 24px;
   border: 1px solid #dcded4;
@@ -151,7 +152,8 @@ button:disabled {
   margin-top: 24px;
 }
 
-.discount-form input {
+.discount-form input,
+.customer-form input {
   width: 90px;
   padding: 8px;
   border: 1px solid #67733b;
@@ -165,4 +167,14 @@ button:disabled {
 
 .error:empty {
   display: none;
+}
+
+.customer-form {
+  display: grid;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.customer-form input {
+  width: 100%;
 }
