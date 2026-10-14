@@ -162,6 +162,13 @@ export class ShopView {
     details.className = "cart-item-details";
     details.textContent = `${item.getName()} (${item.getQuantity()} st) – ${this.#formatPrice(item.getTotalPrice())}`;
 
+    const controls = this.#createCartControls(item);
+
+    element.append(details, controls);
+    return element;
+  }
+
+  #createCartControls(item) {
     const controls = document.createElement("div");
     controls.className = "cart-controls";
 
@@ -191,8 +198,7 @@ export class ShopView {
     );
 
     controls.append(decreaseButton, increaseButton, removeButton);
-    element.append(details, controls);
-    return element;
+    return controls;
   }
 
   #submitDiscount(event) {
