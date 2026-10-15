@@ -146,6 +146,12 @@ export class ShoppingCart {
     return subtotal;
   }
 
+  /**
+   * Applies a percentage discount to the cart.
+   * Invalid values leave the current discount unchanged.
+   * @param {number} percent - Finite discount percentage from 0 to 100.
+   * @returns {boolean} True if the discount was applied, otherwise false.
+   */
   applyDiscount(percent) {
     if (!Number.isFinite(percent) || percent < 0 || percent > 100) {
       return false;
