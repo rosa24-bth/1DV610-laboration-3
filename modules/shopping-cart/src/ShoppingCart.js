@@ -1,13 +1,17 @@
 import { CartItem } from "./CartItem.js";
 
 export class ShoppingCart {
+  /**
+   * Creates an empty new cart.
+   */
   constructor() {
     this.items = [];
     this.discount = 0;
   }
 
   /**
-   * Adding the same product name increases its quantity and keeps its original price.
+   * Adds item. Adding the same product name increases its quantity and keeps
+   * its original price.
    * @param {string} name - Product name.
    * @param {number} price - Positive, finite price per item.
    * @param {number} quantity - Positive, finite quantity to add.
@@ -38,6 +42,11 @@ export class ShoppingCart {
     return true;
   }
 
+  /**
+   * Removes a product from the cart.
+   * @param {string} name - Name of the product to remove.
+   * @returns {boolean} True if removed, or false if the product was not found.
+   */
   removeItem(name) {
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].getName() === name) {
@@ -49,6 +58,13 @@ export class ShoppingCart {
     return false;
   }
 
+  /**
+   * Sets a products quantity to a new value.
+   * @param {string} name - Name of the product to update.
+   * @param {number} quantity - Positive, finite new quantity.
+   * @returns {boolean} True if updated, or false if the quantity is invalid
+   * or the product was not found.
+   */
   updateQuantity(name, quantity) {
     if (!Number.isFinite(quantity) || quantity <= 0) {
       return false;
@@ -63,6 +79,13 @@ export class ShoppingCart {
     return true;
   }
 
+  /**
+   * Adds to a product's current qauntity.
+   * @param {string} name - Name of the product to update.
+   * @param {number} [quantity=1] - Positive, finite quantity to add.
+   * @returns {boolean} True if increased, or false if the quantity is invalid
+   * or the product was not found.
+   */
   increaseItemQuantity(name, quantity = 1) {
     if (!Number.isFinite(quantity) || quantity <= 0) {
       return false;
@@ -81,7 +104,8 @@ export class ShoppingCart {
    * Decreases to zero or below are rejected. Use removeItem() to remove a product.
    * @param {string} name - Product name.
    * @param {number} [quantity=1] - Positive, finite quantity to subtract.
-   * @returns {boolean} Whether the quantity was decreased.
+   * @returns {boolean} True if decreased, or false if the quantity is invalid,
+   * the product was not found or the result would be zero or below.
    */
   decreaseItemQuantity(name, quantity = 1) {
     if (!Number.isFinite(quantity) || quantity <= 0) {
@@ -118,14 +142,24 @@ export class ShoppingCart {
     return this.items;
   }
 
+  /**
+   * @param {string} name - Product name to look up.
+   * @returns {boolean} Whether a product with this name exists in the cart.
+   */
   hasItem(name) {
     return this.getItem(name) !== null;
   }
 
+  /**
+   * @returns {number} Number of different product names in the cart.
+   */
   getNumberOfProducts() {
     return this.items.length;
   }
 
+  /**
+   * @returns {number} Sum of all product quantities.
+   */
   getTotalItems() {
     let totalItems = 0;
 
@@ -136,6 +170,9 @@ export class ShoppingCart {
     return totalItems;
   }
 
+  /**
+   * @returns {number} Total price of all cart items before discount, without rounding.
+   */
   getSubtotal() {
     let subtotal = 0;
 
@@ -161,14 +198,23 @@ export class ShoppingCart {
     return true;
   }
 
+  /**
+   * Resets the discount to zero percent.
+   */
   removeDiscount() {
     this.discount = 0;
   }
 
+  /**
+   * @returns {number} Current discount percentage, from 0 to 100.
+   */
   getDiscount() {
     return this.discount;
   }
 
+  /**
+   * @returns {number} Total price after discount, without rounding.
+   */
   getTotalPrice() {
     const subtotal = this.getSubtotal();
 
@@ -177,12 +223,17 @@ export class ShoppingCart {
     return subtotal - discountAmount;
   }
 
+  /**
+   * @returns {boolean} Whether the cart has no products.
+   */
   isEmpty() {
     return this.items.length === 0;
   }
 
+  /**
+   * Removes all products and resets the discount to zero percent.
+   */
   clearCart() {
-    // A new empty cart should not keep the previous discount
     this.items = [];
     this.discount = 0;
   }
