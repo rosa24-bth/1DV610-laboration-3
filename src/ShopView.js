@@ -88,11 +88,11 @@ export class ShopView {
     }
   }
 
-  hideOrder() {
+  hideOrderSummary() {
     this.#orderSummary.hidden = true;
   }
 
-  showOrder(customer, cart) {
+  showOrderSummary(customer, cart) {
     const heading = document.createElement("h2");
     heading.textContent = "Din beställning";
 

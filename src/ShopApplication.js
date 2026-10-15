@@ -94,11 +94,11 @@ export class ShopApplication {
     }
 
     this.#view.showCustomerErrors(errors);
-    this.#view.hideOrder();
+    this.#view.hideOrderSummary();
     if (errors.length > 0) {
       return;
     }
 
-    this.#view.showOrder(customer, this.#cart);
+    this.#view.showOrderSummary(customer, this.#cart);
   }
 }
